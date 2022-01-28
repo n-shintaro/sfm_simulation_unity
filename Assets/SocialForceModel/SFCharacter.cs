@@ -20,7 +20,9 @@ public class SFCharacter : MonoBehaviour
     public SFCharacter[] agents;
     public Transform destination;
     public float desiredSpeed = 0.5f;
-
+    public float alpha= 1;
+    public float beta= 1;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +42,7 @@ public class SFCharacter : MonoBehaviour
     {
         Vector3 acceleration;
 
-        acceleration = 10*DrivingForce() + AgentInteractForce() + WallInteractForce();
+        acceleration = this.alpha*DrivingForce() + this.beta*AgentInteractForce() + WallInteractForce();
         velocity += acceleration * Time.deltaTime * 3;
 
 
