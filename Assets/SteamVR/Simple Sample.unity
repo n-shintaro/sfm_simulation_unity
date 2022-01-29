@@ -190,6 +190,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
+      propertyPath: WallParent
+      value: 
+      objectReference: {fileID: 1126220464}
+    - target: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
       propertyPath: destination
       value: 
       objectReference: {fileID: 865106966}
@@ -197,6 +201,10 @@ PrefabInstance:
       propertyPath: walls.Array.size
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
+      propertyPath: SFCharacterParent
+      value: 
+      objectReference: {fileID: 2042247042}
     - target: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
       propertyPath: agents.Array.size
       value: 3
@@ -415,6 +423,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1642887807717035429, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
   m_PrefabInstance: {fileID: 2076739213}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &602347945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 602347947}
+  - component: {fileID: 602347946}
+  m_Layer: 0
+  m_Name: SimulationManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &602347946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602347945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c42a6cf29d37fa40a6505abf35507c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SFCharacterParent: {fileID: 2042247042}
+  WallParent: {fileID: 1126220464}
+  walls: []
+  agents: []
+--- !u!4 &602347947
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602347945}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.3547115, y: -0.042343765, z: -2.1749997}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &612262655 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1642887807717035429, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
@@ -521,7 +576,7 @@ Transform:
   - {fileID: 1923935012}
   - {fileID: 377649913}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1189015571
 PrefabInstance:
@@ -532,7 +587,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6022337507215707328, guid: 1e3ae1df7ccb6134c94cf81406f1c0ad, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6022337507215707328, guid: 1e3ae1df7ccb6134c94cf81406f1c0ad, type: 3}
       propertyPath: m_LocalPosition.x
@@ -636,6 +691,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
+      propertyPath: WallParent
+      value: 
+      objectReference: {fileID: 1126220464}
+    - target: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
       propertyPath: destination
       value: 
       objectReference: {fileID: 865106966}
@@ -643,6 +702,10 @@ PrefabInstance:
       propertyPath: walls.Array.size
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
+      propertyPath: SFCharacterParent
+      value: 
+      objectReference: {fileID: 2042247042}
     - target: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
       propertyPath: agents.Array.size
       value: 3
@@ -702,7 +765,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 420908, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 420908, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -906,7 +969,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &1575149487 stripped
 MonoBehaviour:
@@ -1012,7 +1075,7 @@ Transform:
   m_LocalScale: {x: 4, y: 3, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1751041056 stripped
 Transform:
@@ -1028,7 +1091,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6022337507215707328, guid: 1e3ae1df7ccb6134c94cf81406f1c0ad, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6022337507215707328, guid: 1e3ae1df7ccb6134c94cf81406f1c0ad, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1182,7 +1245,7 @@ Transform:
   - {fileID: 585695131}
   - {fileID: 982801493}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2076739213
 PrefabInstance:
@@ -1236,6 +1299,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
+      propertyPath: WallParent
+      value: 
+      objectReference: {fileID: 1126220464}
+    - target: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
       propertyPath: destination
       value: 
       objectReference: {fileID: 1751041056}
@@ -1243,6 +1310,10 @@ PrefabInstance:
       propertyPath: walls.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
+      propertyPath: SFCharacterParent
+      value: 
+      objectReference: {fileID: 2042247042}
     - target: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
       propertyPath: agents.Array.size
       value: 3

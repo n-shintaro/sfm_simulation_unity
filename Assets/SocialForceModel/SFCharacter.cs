@@ -22,13 +22,17 @@ public class SFCharacter : MonoBehaviour
     NavMeshAgent characterAgent;
     float radius;
 
-    public Transform SFCharacterParent;
-    public Transform WallParent;
+    Transform SFCharacterParent;
+    Transform WallParent;
     
     Wall[] walls;
     SFCharacter[] agents;
 
     public Transform destination;
+
+    // public float destination_x=1.0f;
+    // public float destination_y=1.0f;
+    
     public float desiredSpeed = 0.5f;
     public float alpha= 1;
     public float beta= 1;
@@ -80,8 +84,15 @@ public class SFCharacter : MonoBehaviour
             characterAgent.speed = desiredSpeed;
         radius = 0.5f;
 
-        walls=WallParent.GetComponentsInChildren<Wall>();
-        agents=SFCharacterParent.GetComponentsInChildren<SFCharacter>();
+        GameObject simulation_manager=GameObject.Find("SimulationManager");
+        
+        SFMSimulation[] SFMSimulation=simulation_manager.GetComponents<SFMSimulation>();
+        foreach(var sfm_simulation in SFMSimulation){
+            walls=sfm_simulation.walls;
+            agents=sfm_simulation.agents;
+        }
+        
+        
     }
 
     // Update is called once per frame

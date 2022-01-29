@@ -7,8 +7,8 @@ public class SFMSimulation : MonoBehaviour
     public Transform SFCharacterParent;
     public Transform WallParent;
     
-    Wall[] walls;
-    SFCharacter[] agents;
+    public Wall[] walls;
+    public SFCharacter[] agents;
     
     // Start is called before the first frame update
     void Start()
@@ -24,4 +24,5 @@ public class SFMSimulation : MonoBehaviour
     {
         
     }
+
 }
