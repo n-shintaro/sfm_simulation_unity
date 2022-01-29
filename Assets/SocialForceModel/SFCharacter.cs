@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System.Diagnostics;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.XR;
 using UnityStandardAssets.Characters.ThirdPerson;
 using Valve.VR;
+using System; //JsonUtilityを扱うために必要
+using System.IO; //ファイル読み書き用
+
 
 public class SFCharacter : MonoBehaviour
 {
@@ -47,11 +51,23 @@ public class SFCharacter : MonoBehaviour
     //右コントローラの回転座標格納用
     private Vector3 RightHandRotation;
     
+    string filePath;
+    
     // Start is called before the first frame update
+
     void Start()
     {
         characterControl = this.GetComponent<AICharacterControl>();
         characterAgent = this.GetComponent<NavMeshAgent>();
+        
+        //jsonに保存
+        // filePath = Application.dataPath + "/SocialForceModel"+ "/" + "social_force_model.json";
+        // string sfm_json=JsonUtility.ToJson(this, prettyPrint:true);
+        // StreamWriter streamWriter = new StreamWriter(filePath);
+        // streamWriter.Write(sfm_json);
+        // streamWriter.Flush();
+        // streamWriter.Close();
+
         if (this.destination == null) this.destination = this.transform;
         else 
             if (characterControl)
@@ -65,8 +81,12 @@ public class SFCharacter : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 acceleration;
+        Vector3 vr_agent_interaction;
 
         acceleration = this.alpha*DrivingForce() + this.beta*AgentInteractForce() + WallInteractForce()+VrAgentInteractForce();
+        vr_agent_interaction=VrAgentInteractForce();
+        // Debug.Log("HMDPosition:" + HMDPosition.x+ ", " + HMDPosition.y + ", " + HMDPosition.z );
+        // Debug.Log("VrAgentInteractForce:", vr_agent_interaction);
         velocity += acceleration * Time.deltaTime * 3;
 
 
@@ -267,12 +287,12 @@ public class SFCharacter : MonoBehaviour
 
 
         //取得したデータを表示（HMDP：HMD位置，HMDR：HMD回転，LFHR：左コン位置，LFHR：左コン回転，RGHP：右コン位置，RGHR：右コン回転）
-        Debug.Log("HMDP:" + HMDPosition.x + ", " + HMDPosition.y + ", " + HMDPosition.z + "\n" +
-                    "HMDR:" + HMDRotation.x + ", " + HMDRotation.y + ", " + HMDRotation.z);
-        Debug.Log("LFHP:" + LeftHandPosition.x + ", " + LeftHandPosition.y + ", " + LeftHandPosition.z + "\n" +
-                    "LFHR:" + LeftHandRotation.x + ", " + LeftHandRotation.y + ", " + LeftHandRotation.z);
-        Debug.Log("RGHP:" + RightHandPosition.x + ", " + RightHandPosition.y + ", " + RightHandPosition.z + "\n" +
-                    "RGHR:" + RightHandRotation.x + ", " + RightHandRotation.y + ", " + RightHandRotation.z);
+        // Debug.Log("HMDP:" + HMDPosition.x + ", " + HMDPosition.y + ", " + HMDPosition.z + "\n" +
+        //             "HMDR:" + HMDRotation.x + ", " + HMDRotation.y + ", " + HMDRotation.z);
+        // Debug.Log("LFHP:" + LeftHandPosition.x + ", " + LeftHandPosition.y + ", " + LeftHandPosition.z + "\n" +
+        //             "LFHR:" + LeftHandRotation.x + ", " + LeftHandRotation.y + ", " + LeftHandRotation.z);
+        // Debug.Log("RGHP:" + RightHandPosition.x + ", " + RightHandPosition.y + ", " + RightHandPosition.z + "\n" +
+        //             "RGHR:" + RightHandRotation.x + ", " + RightHandRotation.y + ", " + RightHandRotation.z);
     }
 
 

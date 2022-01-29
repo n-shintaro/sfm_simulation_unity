@@ -1,0 +1,27 @@
+{
+    "walls": [
+        {
+            "instanceID": 17734
+        },
+        {
+            "instanceID": 17728
+        }
+    ],
+    "agents": [
+        {
+            "instanceID": 17730
+        },
+        {
+            "instanceID": 17736
+        },
+        {
+            "instanceID": 17722
+        }
+    ],
+    "destination": {
+        "instanceID": 17740
+    },
+    "desiredSpeed": 0.5,
+    "alpha": 1.0,
+    "beta": 1.0
+}
