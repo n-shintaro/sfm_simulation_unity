@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.XR;
 using UnityStandardAssets.Characters.ThirdPerson;
+using Valve.VR;
 
 public class SFCharacter : MonoBehaviour
 {
@@ -23,6 +25,28 @@ public class SFCharacter : MonoBehaviour
     public float alpha= 1;
     public float beta= 1;
     
+    //VR agentの位置を取得
+    //HMDの位置座標格納用
+    private Vector3 HMDPosition;
+    //HMDの回転座標格納用（クォータニオン）
+    private Quaternion HMDRotationQ;
+    //HMDの回転座標格納用（オイラー角）
+    private Vector3 HMDRotation;
+
+    //左コントローラの位置座標格納用
+    private Vector3 LeftHandPosition;
+    //左コントローラの回転座標格納用（クォータニオン）
+    private Quaternion LeftHandRotationQ;
+    //左コントローラの回転座標格納用
+    private Vector3 LeftHandRotation;
+
+    //右コントローラの位置座標格納用
+    private Vector3 RightHandPosition;
+    //右コントローラの回転座標格納用（クォータニオン）
+    private Quaternion RightHandRotationQ;
+    //右コントローラの回転座標格納用
+    private Vector3 RightHandRotation;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -42,7 +66,7 @@ public class SFCharacter : MonoBehaviour
     {
         Vector3 acceleration;
 
-        acceleration = this.alpha*DrivingForce() + this.beta*AgentInteractForce() + WallInteractForce();
+        acceleration = this.alpha*DrivingForce() + this.beta*AgentInteractForce() + WallInteractForce()+VrAgentInteractForce();
         velocity += acceleration * Time.deltaTime * 3;
 
 
@@ -125,6 +149,53 @@ public class SFCharacter : MonoBehaviour
         return interactionForce;
     }
 
+    Vector3 VrAgentInteractForce()
+    {
+        const float lambda = 2.0f;
+        const float gamma = 0.35f;
+        const float nPrime = 3.0f;
+        const float n = 2.0f;
+        //const float A = 4.5f;
+        const float A = 47f;
+        float B, theta;
+        int K;
+        Vector3 interactionForce = new Vector3(0f, 0f, 0f);
+
+        Vector3 vectorToAgent = new Vector3();
+        
+        vectorToAgent = HMDPosition - this.transform.position;
+
+        // Skip if agent is too far
+        if (Vector3.SqrMagnitude(vectorToAgent) < 10f * 10f){
+            Vector3 directionToAgent = vectorToAgent.normalized;
+            // 速度を取得できないと仮定
+            Vector3 interactionVector = directionToAgent; //lambda * (this.Velocity - agent.Velocity) + directionToAgent;
+
+            B = gamma * Vector3.Magnitude(interactionVector);
+
+            Vector3 interactionDir = interactionVector.normalized;
+
+            theta = Mathf.Deg2Rad * Vector3.Angle(interactionDir, directionToAgent);
+
+            if (theta == 0) K = 0;
+            else if (theta > 0) K = 1;
+            else K = -1;
+
+            float distanceToAgent = Vector3.Magnitude(vectorToAgent);
+
+            float deceleration = -A * Mathf.Exp(-distanceToAgent / B
+                                                - (nPrime * B * theta) * (nPrime * B * theta));
+            float directionalChange = -A * K * Mathf.Exp(-distanceToAgent / B
+                                                            - (n * B * theta) * (n * B * theta));
+            Vector3 normalInteractionVector = new Vector3(-interactionDir.z, interactionDir.y, interactionDir.x);
+            //Vector3 normalInteractionVector = new Vector3(-interactionDir.y, interactionDir.x, 0);
+
+            interactionForce += deceleration * interactionDir + directionalChange * normalInteractionVector; 
+        }
+        return interactionForce;
+    }
+
+
     Vector3 WallInteractForce()
     {
         const float A = 3f;
@@ -158,5 +229,51 @@ public class SFCharacter : MonoBehaviour
         return obsInteractForce;
 
     }
+
+    // 1フレーム毎に呼び出されるUpdateメゾット
+    void Update()
+    {
+
+        /*InputTracking.GetLocalPosition(XRNode.機器名)で機器の位置や向きを呼び出せる*/
+
+        //Head（ヘッドマウンドディスプレイ）の情報を一時保管-----------
+        //位置座標を取得
+        HMDPosition = InputTracking.GetLocalPosition(XRNode.Head);
+        //回転座標をクォータニオンで値を受け取る
+        HMDRotationQ = InputTracking.GetLocalRotation(XRNode.Head);
+        //取得した値をクォータニオン → オイラー角に変換
+        HMDRotation = HMDRotationQ.eulerAngles;
+        //--------------------------------------------------------------
+
+
+        //LeftHand（左コントローラ）の情報を一時保管--------------------
+        //位置座標を取得
+        LeftHandPosition = InputTracking.GetLocalPosition(XRNode.LeftHand);
+        //回転座標をクォータニオンで値を受け取る
+        LeftHandRotationQ = InputTracking.GetLocalRotation(XRNode.LeftHand);
+        //取得した値をクォータニオン → オイラー角に変換
+        LeftHandRotation = LeftHandRotationQ.eulerAngles;
+        //--------------------------------------------------------------
+
+
+        //RightHand（右コントローラ）の情報を一時保管--------------------
+        //位置座標を取得
+        RightHandPosition = InputTracking.GetLocalPosition(XRNode.RightHand);
+        //回転座標をクォータニオンで値を受け取る
+        RightHandRotationQ = InputTracking.GetLocalRotation(XRNode.RightHand);
+        //取得した値をクォータニオン → オイラー角に変換
+        RightHandRotation = RightHandRotationQ.eulerAngles;
+        //--------------------------------------------------------------
+
+
+        //取得したデータを表示（HMDP：HMD位置，HMDR：HMD回転，LFHR：左コン位置，LFHR：左コン回転，RGHP：右コン位置，RGHR：右コン回転）
+        Debug.Log("HMDP:" + HMDPosition.x + ", " + HMDPosition.y + ", " + HMDPosition.z + "\n" +
+                    "HMDR:" + HMDRotation.x + ", " + HMDRotation.y + ", " + HMDRotation.z);
+        Debug.Log("LFHP:" + LeftHandPosition.x + ", " + LeftHandPosition.y + ", " + LeftHandPosition.z + "\n" +
+                    "LFHR:" + LeftHandRotation.x + ", " + LeftHandRotation.y + ", " + LeftHandRotation.z);
+        Debug.Log("RGHP:" + RightHandPosition.x + ", " + RightHandPosition.y + ", " + RightHandPosition.z + "\n" +
+                    "RGHR:" + RightHandRotation.x + ", " + RightHandRotation.y + ", " + RightHandRotation.z);
+    }
+
 
 }
