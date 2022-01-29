@@ -22,8 +22,12 @@ public class SFCharacter : MonoBehaviour
     NavMeshAgent characterAgent;
     float radius;
 
-    public Wall[] walls;
-    public SFCharacter[] agents;
+    public Transform SFCharacterParent;
+    public Transform WallParent;
+    
+    Wall[] walls;
+    SFCharacter[] agents;
+
     public Transform destination;
     public float desiredSpeed = 0.5f;
     public float alpha= 1;
@@ -61,13 +65,13 @@ public class SFCharacter : MonoBehaviour
         characterAgent = this.GetComponent<NavMeshAgent>();
         
         //jsonに保存
-        // filePath = Application.dataPath + "/SocialForceModel"+ "/" + "social_force_model.json";
-        // string sfm_json=JsonUtility.ToJson(this, prettyPrint:true);
-        // StreamWriter streamWriter = new StreamWriter(filePath);
-        // streamWriter.Write(sfm_json);
-        // streamWriter.Flush();
-        // streamWriter.Close();
-
+        filePath = Application.dataPath + "/SocialForceModel"+ "/" + "sfm_data_save.json";
+        string sfm_json=JsonUtility.ToJson(this, prettyPrint:true);
+        StreamWriter streamWriter = new StreamWriter(filePath);
+        streamWriter.Write(sfm_json);
+        streamWriter.Flush();
+        streamWriter.Close();
+        
         if (this.destination == null) this.destination = this.transform;
         else 
             if (characterControl)
@@ -75,6 +79,9 @@ public class SFCharacter : MonoBehaviour
         if (characterAgent)
             characterAgent.speed = desiredSpeed;
         radius = 0.5f;
+
+        walls=WallParent.GetComponentsInChildren<Wall>();
+        agents=SFCharacterParent.GetComponentsInChildren<SFCharacter>();
     }
 
     // Update is called once per frame

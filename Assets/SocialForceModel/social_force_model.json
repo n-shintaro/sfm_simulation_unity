@@ -1,23 +1,10 @@
 {
-    "walls": [
-        {
-            "instanceID": 17734
-        },
-        {
-            "instanceID": 17728
-        }
-    ],
-    "agents": [
-        {
-            "instanceID": 17730
-        },
-        {
-            "instanceID": 17736
-        },
-        {
-            "instanceID": 17722
-        }
-    ],
+    "SFCharacterParent": {
+        "instanceID": -29220
+    },
+    "WallParent": {
+        "instanceID": -31118
+    },
     "destination": {
         "instanceID": 17740
     },
