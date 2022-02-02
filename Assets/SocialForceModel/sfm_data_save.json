@@ -1,7 +1,10 @@
 {
     "destination": {
-        "instanceID": 46258
+        "instanceID": 0
     },
+    "destination_x": 0.0,
+    "destination_y": -0.9300000071525574,
+    "destination_z": -80.0,
     "desiredSpeed": 0.5,
     "alpha": 1.0,
     "beta": 1.0

@@ -30,8 +30,9 @@ public class SFCharacter : MonoBehaviour
 
     public Transform destination;
 
-    // public float destination_x=1.0f;
-    // public float destination_y=1.0f;
+    public float destination_x=-3.0f;
+    public float destination_y=0.0f;
+    public float destination_z=10.0f;
     
     public float desiredSpeed = 0.5f;
     public float alpha= 1;
@@ -76,6 +77,10 @@ public class SFCharacter : MonoBehaviour
         streamWriter.Flush();
         streamWriter.Close();
         
+        Vector3 destination_tmp=new Vector3(destination_x,destination_y,destination_z);
+        destination.transform.position=destination_tmp;
+        UnityEngine.Debug.Log("destination.transform.position:");
+
         if (this.destination == null) this.destination = this.transform;
         else 
             if (characterControl)

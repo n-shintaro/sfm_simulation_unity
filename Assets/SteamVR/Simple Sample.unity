@@ -134,6 +134,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a17365de6063648a04befdf520aa92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &180184973 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1642887807717105375, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
+  m_PrefabInstance: {fileID: 1403661755}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &274340639
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -456,6 +461,7 @@ MonoBehaviour:
   WallParent: {fileID: 1126220464}
   walls: []
   agents: []
+  SFCharacter: {fileID: 180184973}
 --- !u!4 &602347947
 Transform:
   m_ObjectHideFlags: 0
@@ -976,7 +982,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1642887807717105374, guid: bffa9f1b97044e144b98401d1f7d2f6b, type: 3}
   m_PrefabInstance: {fileID: 1403661755}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 180184973}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31a17365de6063648a04befdf520aa92, type: 3}
