@@ -155,7 +155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a17365de6063648a04befdf520aa92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {fileID: 0}
+  destination: {fileID: 4725719978300048056}
+  destination_x: -3
+  destination_y: 0
+  destination_z: 10
   desiredSpeed: 0.5
   alpha: 1
   beta: 1

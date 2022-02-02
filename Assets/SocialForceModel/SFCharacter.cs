@@ -28,7 +28,7 @@ public class SFCharacter : MonoBehaviour
     Wall[] walls;
     SFCharacter[] agents;
 
-    public Transform destination;
+    Vector3 destination;
 
     public float destination_x=-3.0f;
     public float destination_y=0.0f;
@@ -78,10 +78,10 @@ public class SFCharacter : MonoBehaviour
         streamWriter.Close();
         
         Vector3 destination_tmp=new Vector3(destination_x,destination_y,destination_z);
-        destination.transform.position=destination_tmp;
+        destination=destination_tmp;
         UnityEngine.Debug.Log("destination.transform.position:");
 
-        if (this.destination == null) this.destination = this.transform;
+        if (this.destination == null) this.destination = this.transform.position;
         else 
             if (characterControl)
                 characterControl.target.localPosition = velocity;
@@ -106,7 +106,7 @@ public class SFCharacter : MonoBehaviour
         Vector3 acceleration;
         Vector3 vr_agent_interaction;
 
-        acceleration = this.alpha*DrivingForce() + this.beta*AgentInteractForce() + WallInteractForce()+VrAgentInteractForce();
+        acceleration = this.alpha*DrivingForce() + this.beta*AgentInteractForce() + WallInteractForce();//+VrAgentInteractForce();
         vr_agent_interaction=VrAgentInteractForce();
         // Debug.Log("HMDPosition:" + HMDPosition.x+ ", " + HMDPosition.y + ", " + HMDPosition.z );
         // Debug.Log("VrAgentInteractForce:", vr_agent_interaction);
@@ -133,7 +133,7 @@ public class SFCharacter : MonoBehaviour
     Vector3 DrivingForce()
     {
         const float relaxationT = 0.54f;
-        Vector3 desiredDirection = destination.transform.position - this.transform.position;
+        Vector3 desiredDirection = destination - this.transform.position;
         desiredDirection.Normalize();
 
         Vector3 drivingForce = (desiredSpeed * desiredDirection - velocity) / relaxationT;
