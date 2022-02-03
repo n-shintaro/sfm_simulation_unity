@@ -30,9 +30,9 @@ public class SFCharacter : MonoBehaviour
 
     Vector3 destination;
 
-    public float destination_x=-3.0f;
-    public float destination_y=0.0f;
-    public float destination_z=10.0f;
+    public float destination_x;
+    public float destination_y;
+    public float destination_z;
     
     public float desiredSpeed = 0.5f;
     public float alpha= 1;
@@ -78,8 +78,7 @@ public class SFCharacter : MonoBehaviour
         streamWriter.Close();
         
         Vector3 destination_tmp=new Vector3(destination_x,destination_y,destination_z);
-        destination=destination_tmp;
-        UnityEngine.Debug.Log("destination.transform.position:");
+        this.destination=destination_tmp;
 
         if (this.destination == null) this.destination = this.transform.position;
         else 
@@ -123,6 +122,7 @@ public class SFCharacter : MonoBehaviour
         // Update current attributes to AICharacterControl
         if (characterControl)
             characterControl.target.transform.position = this.transform.position + velocity.normalized;
+            
         else
            this.transform.position += velocity * Time.deltaTime * 5;
 
@@ -133,6 +133,7 @@ public class SFCharacter : MonoBehaviour
     Vector3 DrivingForce()
     {
         const float relaxationT = 0.54f;
+        UnityEngine.Debug.Log("destination:"+destination);
         Vector3 desiredDirection = destination - this.transform.position;
         desiredDirection.Normalize();
 
