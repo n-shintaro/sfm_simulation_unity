@@ -22,8 +22,6 @@ public class SFCharacter : MonoBehaviour
     NavMeshAgent characterAgent;
     float radius;
 
-    Transform SFCharacterParent;
-    Transform WallParent;
     
     Wall[] walls;
     SFCharacter[] agents;
@@ -38,6 +36,10 @@ public class SFCharacter : MonoBehaviour
     public float alpha= 1;
     public float beta= 1;
     
+    GameObject SFCharacterParent;
+    GameObject WallParent;
+
+
     //VR agentの位置を取得
     //HMDの位置座標格納用
     private Vector3 HMDPosition;
@@ -66,6 +68,7 @@ public class SFCharacter : MonoBehaviour
 
     void Start()
     {
+
         characterControl = this.GetComponent<AICharacterControl>();
         characterAgent = this.GetComponent<NavMeshAgent>();
         
@@ -78,7 +81,7 @@ public class SFCharacter : MonoBehaviour
         streamWriter.Close();
         
         Vector3 destination_tmp=new Vector3(destination_x,destination_y,destination_z);
-        this.destination=destination_tmp;
+        destination=destination_tmp;
 
         if (this.destination == null) this.destination = this.transform.position;
         else 
@@ -97,20 +100,32 @@ public class SFCharacter : MonoBehaviour
         }
         
         
+        
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        GameObject simulation_manager=GameObject.Find("SimulationManager");
+        
+        SFMSimulation[] SFMSimulation=simulation_manager.GetComponents<SFMSimulation>();
+        foreach(var sfm_simulation in SFMSimulation){
+            walls=sfm_simulation.walls;
+            agents=sfm_simulation.agents;
+            
+        }
+        
+        
         Vector3 acceleration;
         Vector3 vr_agent_interaction;
 
-        acceleration = this.alpha*DrivingForce() + this.beta*AgentInteractForce() + WallInteractForce();//+VrAgentInteractForce();
-        vr_agent_interaction=VrAgentInteractForce();
-        // Debug.Log("HMDPosition:" + HMDPosition.x+ ", " + HMDPosition.y + ", " + HMDPosition.z );
-        // Debug.Log("VrAgentInteractForce:", vr_agent_interaction);
-        velocity += acceleration * Time.deltaTime * 3;
 
+        acceleration = this.alpha*DrivingForce() + this.beta*AgentInteractForce() + WallInteractForce()+this.beta*VrAgentInteractForce();
+        
+        vr_agent_interaction=VrAgentInteractForce();
+        velocity += acceleration * Time.deltaTime * 3;
+        
+        UnityEngine.Debug.Log("vr_agent_interaction.x:" + vr_agent_interaction.x + ",vr_agent_interaction.y ="+vr_agent_interaction.y);
 
         // Limit maximum velocity
         if (Vector3.SqrMagnitude(velocity) > desiredSpeed * desiredSpeed)
@@ -133,7 +148,6 @@ public class SFCharacter : MonoBehaviour
     Vector3 DrivingForce()
     {
         const float relaxationT = 0.54f;
-        UnityEngine.Debug.Log("destination:"+destination);
         Vector3 desiredDirection = destination - this.transform.position;
         desiredDirection.Normalize();
 
@@ -156,8 +170,10 @@ public class SFCharacter : MonoBehaviour
 
         Vector3 vectorToAgent = new Vector3();
 
+
         foreach (SFCharacter agent in agents)
         {
+           
             // Skip if agent is self
             if (agent == this) continue;
 
@@ -213,7 +229,7 @@ public class SFCharacter : MonoBehaviour
         if (Vector3.SqrMagnitude(vectorToAgent) < 10f * 10f){
             Vector3 directionToAgent = vectorToAgent.normalized;
             // 速度を取得できないと仮定
-            Vector3 interactionVector = directionToAgent; //lambda * (this.Velocity - agent.Velocity) + directionToAgent;
+            Vector3 interactionVector = directionToAgent+lambda *  this.Velocity + directionToAgent;
 
             B = gamma * Vector3.Magnitude(interactionVector);
 
@@ -248,7 +264,7 @@ public class SFCharacter : MonoBehaviour
         float squaredDist = Mathf.Infinity;
         float minSquaredDist = Mathf.Infinity;
         Vector3 minDistVector = new Vector3();
-
+    
         // Find distance to nearest obstacles
         foreach (Wall w in walls)
         {

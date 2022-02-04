@@ -19,9 +19,9 @@ public class SFMSimulation : MonoBehaviour
     //経過時間
     private float time = 0f;
     //時間間隔の最小値
-    public float minTime = 2f;
+    public float minTime = 30f;
     //時間間隔の最大値
-    public float maxTime = 5f;
+    public float maxTime = 60f;
     //位置間隔の最小値
     public float minPos = 0f;
     //位置間隔の最大値
@@ -29,19 +29,34 @@ public class SFMSimulation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // 壁の位置をすべて取得
-       walls=WallParent.GetComponentsInChildren<Wall>();
-       //SFCharcterの位置をすべて取得
-       agents=SFCharacterParent.GetComponentsInChildren<SFCharacter>();
+        
 
         //時間間隔を決定する
         interval = GetRandomTime();
-       
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        // 壁の位置をすべて取得
+       walls=WallParent.GetComponentsInChildren<Wall>();
+       //SFCharcterの位置をすべて取得
+       agents=SFCharacterParent.GetComponentsInChildren<SFCharacter>();
+        //目的地に到達してたら、消去
+        
+        //SFCharcterの位置をすべて取得
+        GameObject[] agents_destroy=GameObject.FindGameObjectsWithTag("SFCharacter");
+
+        foreach(GameObject agent in agents_destroy){
+            SFCharacter sfm_agent=agent.GetComponent<SFCharacter>();
+            Vector3 destination_position=new Vector3(sfm_agent.destination_x,sfm_agent.destination_y,sfm_agent.destination_z);
+            float distance_to_goal=(agent.transform.position-destination_position).magnitude;
+            if(distance_to_goal<1.5){
+                Destroy(agent);
+            }
+                
+
+        }
         //時間計測
         time += Time.deltaTime;
  
@@ -52,7 +67,7 @@ public class SFMSimulation : MonoBehaviour
             GameObject character = Instantiate(SFMCharacter);
             //生成した敵の座標を決定する(現状X=0,Y=1,Z=20の位置に出力)
             random_pos_x=GetRandomPos();
-            character.transform.position = new Vector3(random_pos_x,-0.5f,-30f);
+            character.transform.position = new Vector3(random_pos_x,1.0f,-30f);
 
             // SFMCharcterの親を設定
             character.transform.parent=SFCharacterParent;
@@ -60,10 +75,27 @@ public class SFMSimulation : MonoBehaviour
             nav_mesh_agent.enabled=true;
             //目的地を決定
             SFCharacter sfm_character=character.GetComponent<SFCharacter>();
-            sfm_character.destination_x=GetRandomPos();
-            sfm_character.destination_y=-0.93f;
-            sfm_character.destination_z=80f;
+            sfm_character.destination_x=random_pos_x;
+            sfm_character.destination_y=1.0f;
+            sfm_character.destination_z=30f;
 
+
+            // 逆向きの歩行者生成
+            //SFCharacterを(生成する)
+            GameObject character2 = Instantiate(SFMCharacter);
+            //生成した敵の座標を決定する(現状X=0,Y=1,Z=20の位置に出力)
+            random_pos_x=GetRandomPos();
+            character2.transform.position = new Vector3(random_pos_x,1.0f,30f);
+
+            // SFMCharcterの親を設定
+            character2.transform.parent=SFCharacterParent;
+            UnityEngine.AI.NavMeshAgent nav_mesh_agent2=character2.GetComponent<UnityEngine.AI.NavMeshAgent>();
+            nav_mesh_agent2.enabled=true;
+            //目的地を決定
+            SFCharacter sfm_character2=character2.GetComponent<SFCharacter>();
+            sfm_character2.destination_x=random_pos_x;
+            sfm_character2.destination_y=1.0f;
+            sfm_character2.destination_z=-30f;
             
             // AI Character Controllerに目的地を与える
             // AICharacterControl ai_character_control=character.GetComponent<AICharacterControl>();
@@ -76,6 +108,9 @@ public class SFMSimulation : MonoBehaviour
             //次に発生する時間間隔を決定する
             interval = GetRandomTime();
         }
+
+        
+
     }
 
     //ランダムな時間を生成する関数

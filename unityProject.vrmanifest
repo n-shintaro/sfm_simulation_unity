@@ -5,7 +5,7 @@
       "app_key": "application.generated.unity.sfmsimulationpractice.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "C:\\Users\\ytnpc2021i\\Documents\\unity\\sfm_simulation_unity\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "action_manifest_path": "C:\\Users\\ytnpc2021i\\Documents\\unity\\sfm_simulation_unity_ver3\\Assets\\StreamingAssets\\SteamVR\\actions.json",
       "strings": {
         "en_us": {
           "name": "sfm-simulation-practice [Testing]"
