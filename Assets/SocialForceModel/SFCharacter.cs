@@ -125,8 +125,7 @@ public class SFCharacter : MonoBehaviour
         vr_agent_interaction=VrAgentInteractForce();
         velocity += acceleration * Time.deltaTime * 3;
         
-        UnityEngine.Debug.Log("vr_agent_interaction.x:" + vr_agent_interaction.x + ",vr_agent_interaction.y ="+vr_agent_interaction.y);
-
+        
         // Limit maximum velocity
         if (Vector3.SqrMagnitude(velocity) > desiredSpeed * desiredSpeed)
         {
